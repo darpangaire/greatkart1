@@ -138,3 +138,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
  
 
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+    50: "critical",
+}
+
+#SMTP Configuration
+EMAIL_HOST = 'smtp.email.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'chologorogi@gmail.com'
+EMAIL_HOST_PASSWORD = 'darpan'
+EMAIL_USE_TLS = True
+
+
