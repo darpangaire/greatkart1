@@ -4,6 +4,8 @@ from .models import Account
 from django.contrib import messages
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
+from carts.models import Cart,CartItem
+from carts.views import _cart_id
 
 # Verification Email
 from django.contrib.sites.shortcuts import get_current_site
@@ -33,7 +35,7 @@ def register(request):
       user.save()
       #the below down code is necessary but i don't know how 2 step verification work.so i comment it out
       messages.success(request,'Registration successful.')
-      return redirect('login')
+
       
       # USER ACTIVATION
       # current_site = get_current_site(request)
@@ -49,7 +51,11 @@ def register(request):
       # send_email = EmailMessage(mail_subject,message,to=[to_email])
       # send_email.send() 
       # messages.success(request,"Registration successful. Please check your email to activate your account.")
-      #
+      return redirect('login')
+    
+    else:
+      messages.error(request,"Invalid registration details")
+      
   else:
     form = RegistrationForm()
   return render(request,'accounts/register.html',{'form':form})
@@ -60,6 +66,20 @@ def login(request):
     password = request.POST['password']
     user = auth.authenticate(email=email,password=password)
     if user is not None:
+      try:
+        print("enter cart")
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+        print(is_cart_item_exists)
+        if is_cart_item_exists:
+          cart_item = CartItem.objects.filter(cart=cart)
+          for item in cart_item:
+            item.user = user
+            item.save()
+
+      except:
+        print("i am in except block")
+        pass
       auth.login(request,user)
       messages.success(request,"Login successful")
       return redirect('dashboard')
@@ -102,7 +122,7 @@ def forgotPassword(request):
     if Account.objects.filter(email=email).exists():
       user = Account.objects.get(email__exact=email)
       request.session['uid'] = user.pk
-      # Reset password email
+      #Reset password email
       # current_site = get_current_site(request)
       # mail_subject = "Reset Your Password"
       # message = render_to_string('accounts/reset_password_email.html',{
