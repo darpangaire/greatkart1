@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-60e%-c@fa#92+3!-iy#%eo$tqxszlab84p)gn03*j5_bwonbyw
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','.now.sh']
 
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'greatkart.urls'
@@ -131,7 +134,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')  # Avoid overlap with STATICFILES_DIRS
-STATICFILES_DIRS = ['static/']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -159,3 +163,4 @@ EMAIL_HOST_PASSWORD = 'darpan'
 EMAIL_USE_TLS = True
 
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
