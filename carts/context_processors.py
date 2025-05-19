@@ -21,7 +21,7 @@ def counter(request):
       
   return dict(cart_count = cart_count)
 
-
+  
 
 
 

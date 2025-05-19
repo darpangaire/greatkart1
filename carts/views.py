@@ -60,6 +60,7 @@ def add_cart(request, product_id, color=None, size=None):
     cart.save()
 
     # Check for existing cart items
+
     cart_items = CartItem.objects.filter(product=product, cart=cart)
     if cart_items.exists():
         for item in cart_items:
@@ -105,7 +106,7 @@ def cart(request,total = 0,quantity=0,cart_items=None):
       cart_items = CartItem.objects.filter(cart = cart,is_active = True)
     for cart_item in cart_items:
       total += (cart_item.product.price * cart_item.quantity)
-      quantity += cart_item.quantity
+      quantity += cart_item.quantity 
       
     tax = (2*total)/100
     grand_total = total + tax  

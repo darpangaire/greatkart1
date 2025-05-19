@@ -13,10 +13,10 @@ def store(request,category_slug=None):
   products = None
   if category_slug != None:
     categories = get_object_or_404(Category,slug = category_slug)
-    products = Product.objects.filter(category = categories,is_available=True).order_by('id')
-    paginator = Paginator(products,1)
+    products = Product.objects.filter(category = categories,is_available=True).order_by('id') 
+    paginator = Paginator(products,1)  
     page = request.GET.get('page')
-    paged_products = paginator.get_page(page)
+    paged_products = paginator.get_page(page)     
     
     
   else:
@@ -39,6 +39,7 @@ def product_detail(request,category_slug,product_slug):
     raise e
   return render(request,'store/product_detail.html',{'single_product':single_product,'in_cart':in_cart})
   #return render(request,'store/product_detail.html',{})
+
 
 
 def search(request):
