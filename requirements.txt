@@ -1,7 +1,6 @@
 asgiref
 Django
 pillow
-psycopg2
 psycopg2-binary
 sqlparse
 whitenoise
