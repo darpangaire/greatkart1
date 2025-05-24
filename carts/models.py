@@ -11,6 +11,7 @@ class Cart(models.Model):
   def __str__(self):
     return self.cart_id
 
+
 class CartItem(models.Model):
   user = models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
   product = models.ForeignKey(Product,on_delete=models.CASCADE)
@@ -18,10 +19,10 @@ class CartItem(models.Model):
   cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
   quantity = models.IntegerField()
   is_active = models.BooleanField(default=True)
-  
-  def __str__(self):
+
+  def __unicode__(self):
     return self.product
-  
+ 
   def sub_total(self):
     return self.product.price * self.quantity
 
