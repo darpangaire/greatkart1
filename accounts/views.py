@@ -15,7 +15,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
-
+ 
 
 # Create your views here.
 
@@ -67,18 +67,44 @@ def login(request):
     user = auth.authenticate(email=email,password=password)
     if user is not None:
       try:
-        print("enter cart")
         cart = Cart.objects.get(cart_id = _cart_id(request))
         is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-        print(is_cart_item_exists)
         if is_cart_item_exists:
+          product_variations = []
           cart_item = CartItem.objects.filter(cart=cart)
+          # getting the product variations by cart ids 
           for item in cart_item:
-            item.user = user
-            item.save()
+            variation = list(item.variations.all())
+            product_variations.append(variation)
+            
+            
+          # get the cart items  from the user to access  his product variations
+          cart_item = CartItem.objects.filter(user=user)
+          ex_var_list = []
+          id = []
+          for item in cart_item:
+            existing_variation = list(item.variations.all().order_by('id'))
+            ex_var_list.append(existing_variation)
+            id.append(item.id)
+          
+          for pr in product_variations:
+            if pr in ex_var_list:
+              index = ex_var_list.index(pr)
+              item_id = id[index]
+              item = CartItem.objects.get(id=item_id)
+              item.quantity += 1
+              item.user = user
+              item.save()
+              
+            else:
+              cart_item = cart_item.objects.filter(cart=cart)
+              for item in cart_item:
+                item.user = user
+                item.save()
+                
 
       except:
-        print("i am in except block")
+        
         pass
       auth.login(request,user)
       messages.success(request,"Login successful")
@@ -94,21 +120,23 @@ def logout(request):
   messages.success(request,"You are logged out")
   return redirect('login')
 
-# def activate(request,uidb64,token):
-#   try:
-#     uid = urlsafe_base64_decode(uidb64).decode()
-#     user = Account._default_manager.get(pk=uid)
-#   except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
-#     user = None
+# def activate(request):
+#   return HttpResponse('ok')
   
-#   if user is not None and default_token_generator.check_token(user,token):
-#     user.is_active = True
-#     user.save()
-#     messages.success(request,"Congratulations! Your account is activated.")
-#     return redirect('login')
-#   else:
-#     messages.error(request,"Invalid activation link")
-#     return redirect('register')
+  # try:
+  #   uid = urlsafe_base64_decode(uidb64).decode()
+  #   user = Account._default_manager.get(pk=uid)
+  # except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+  #   user = None
+  
+  # if user is not None and default_token_generator.check_token(user,token):
+  #   user.is_active = True
+  #   user.save()
+  #   messages.success(request,"Congratulations! Your account is activated.")
+  #   return redirect('login')
+  # else:
+  #   messages.error(request,"Invalid activation link")
+  #   return redirect('register')
    
 @login_required(login_url = 'login')  
 def dashboard(request):

@@ -85,6 +85,7 @@
       </thead>
       <tbody>
 
+      {% if cart_items|length > 0 %} 
       {% for cart_item in cart_items %}
       <tr>
       	<td>
@@ -115,6 +116,11 @@
 
       </tr>
       {% endfor %}
+
+      {% else %}
+      <h2>NO Items</h2>
+
+      {% endif %}
 
       </tbody>
       </table>
