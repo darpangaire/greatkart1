@@ -24,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-60e%-c@fa#92+3!-iy#%eo$tqxszlab84p)gn03*j5_bwonbyw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+DEBUG = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','.now.sh']
 
 
 
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'greatkart.urls'
@@ -86,24 +86,24 @@ AUTH_USER_MODEL = 'accounts.Account'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER':'postgres',
-#         'PASSWORD':'XLOwKuYkUqVyVzbbQJCSTJHqBLePIUIo',
-#         'HOST':'autorack.proxy.rlwy.net',
-#         'PORT':'46946',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER':'postgres',
+        'PASSWORD':'XLOwKuYkUqVyVzbbQJCSTJHqBLePIUIo',
+        'HOST':'autorack.proxy.rlwy.net',
+        'PORT':'46946',
     }
 }
+ 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 
@@ -165,11 +165,11 @@ MESSAGE_TAGS = {
 }
 
 #SMTP Configuration
-EMAIL_HOST = 'smtp.email.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gairedarpan02@gmail.com'
-EMAIL_HOST_PASSWORD = 'darpan'
-EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.email.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'gairedarpan02@gmail.com'
+# EMAIL_HOST_PASSWORD = 'darpan'
+# EMAIL_USE_TLS = True
 
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
