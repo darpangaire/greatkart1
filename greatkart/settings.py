@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-60e%-c@fa#92+3!-iy#%eo$tqxszlab84p)gn03*j5_bwonbyw'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
@@ -88,12 +90,12 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER':'postgres',
-        'PASSWORD':'lwyxzpoRDuhypmtbsZnySIecdhphTjtp',
-        'HOST':'mainline.proxy.rlwy.net',
-        'PORT':'32659',
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER':os.getenv('DATABASE_USER'),
+        'PASSWORD':os.getenv('DATABASE_PASSWORD'),
+        'HOST':os.getenv('DATABASE_HOST'),
+        'PORT':os.getenv('DATABASE_PORT'),
     }
 }
  
@@ -164,12 +166,7 @@ MESSAGE_TAGS = {
     50: "critical",
 }
 
-#SMTP Configuration
-# EMAIL_HOST = 'smtp.email.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'gairedarpan02@gmail.com'
-# EMAIL_HOST_PASSWORD = 'darpan'
-# EMAIL_USE_TLS = True
+
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
